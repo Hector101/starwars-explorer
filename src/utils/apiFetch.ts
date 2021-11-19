@@ -1,20 +1,25 @@
 import { config } from '../config'
-import { ApiResponse } from '../types'
+
+interface RequestOptions extends RequestInit {
+  isFullUrl?: boolean
+}
 
 const apiBaseUrl = config('apiBaseUrl')
 
 
 export async function apiFetch<T>(
-  path: string,
-  opts?: RequestInit,
-): Promise<ApiResponse<T>> {
-  if (apiBaseUrl === null) {
+  url: string,
+  opts?: RequestOptions,
+): Promise<T> {
+  if (opts && !opts.isFullUrl && !apiBaseUrl) {
     throw new Error('API URL not set')
   }
 
   opts = opts || {}
   opts.headers = { 'content-type': 'application/json', ...opts.headers }
+
+  const apiUrl = opts.isFullUrl ? url : `${apiBaseUrl}${url}`
   
-  const res = await fetch(`${apiBaseUrl}${path}`, opts)
+  const res = await fetch(apiUrl, opts)
   return await res.json()
 }

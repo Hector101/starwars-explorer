@@ -1,26 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import '@fontsource/roboto/300.css'
-import '@fontsource/roboto/400.css'
-import '@fontsource/roboto/500.css'
-import '@fontsource/roboto/700.css'
+import { loadPeople, selectPeople } from 'src/store/reducers/peopleStore'
+import { useAppDispatch, useAppSelector } from 'src/store/hook'
 
 function App() {
+  const dispatch = useAppDispatch()
+  const people = useAppSelector(selectPeople)
+
+  useEffect(() => {
+    dispatch(loadPeople())
+  }, [])
+
+  if (people.status === 'loading') {
+    return <div>Loding</div>
+  }
+
+  if (people.status === 'failed') {
+    return <div>Error</div>
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {people.data.results.map((person) => {
+        return (<div>{person.name}</div>)
+      })}
     </div>
   );
 }

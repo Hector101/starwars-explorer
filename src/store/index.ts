@@ -1,6 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 
-import { peopleReducer } from 'redux/reducers/peopleStore'
+import { peopleReducer } from 'src/store/reducers/peopleStore'
 
 export const store = configureStore({
   reducer: {
