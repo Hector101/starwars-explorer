@@ -6,7 +6,7 @@ import { ApiResponse, Person } from 'src/types'
 
 export type PeopleState = & {
   data: ApiResponse<Person[]>
-  status: 'idle' | 'loading' | 'failed'
+  status: 'loading' | 'failed' | 'loaded'
 }
 
 const initialData = {
@@ -18,7 +18,7 @@ const initialData = {
 
 const initialState: PeopleState = {
   data: initialData,
-  status: 'idle',
+  status: 'loading',
 }
 
 export const loadPeople = createAsyncThunk(
@@ -32,7 +32,8 @@ export const loadPeople = createAsyncThunk(
 export const loadMorePeople = createAsyncThunk(
   'people/loadMorePeople',
   async (url: string) => {
-    const response = await apiFetch<ApiResponse<Person[]>>(url, { isFullUrl: true })
+    const path = new URL(url).pathname
+    const response = await apiFetch<ApiResponse<Person[]>>(path)
     return response
   }
 )
@@ -47,7 +48,7 @@ export const peopleSlice = createSlice({
         state.status = 'loading'
       })
       .addCase(loadPeople.fulfilled, (state, action) => {
-        state.status = 'idle'
+        state.status = 'loaded'
         state.data = action.payload
       })
       .addCase(loadPeople.rejected, (state) => {
@@ -59,7 +60,7 @@ export const peopleSlice = createSlice({
         state.data = initialData
       })
       .addCase(loadMorePeople.fulfilled, (state, action) => {
-        state.status = 'idle'
+        state.status = 'loaded'
         state.data = action.payload
       })
       .addCase(loadMorePeople.rejected, (state) => {

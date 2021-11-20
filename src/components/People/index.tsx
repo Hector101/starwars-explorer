@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 
 import { loadPeople, selectPeople } from 'src/store/reducers/peopleStore'
 import { useAppDispatch, useAppSelector } from 'src/store/hook'
+import Layout from 'src/components/Layout'
 
-function App() {
+const People = () => {
   const dispatch = useAppDispatch()
   const people = useAppSelector(selectPeople)
 
@@ -11,21 +12,11 @@ function App() {
     dispatch(loadPeople())
   }, [])
 
-  if (people.status === 'loading') {
-    return <div>Loding</div>
-  }
-
-  if (people.status === 'failed') {
-    return <div>Error</div>
-  }
-
   return (
-    <div className="App">
-      {people.data.results.map((person) => {
-        return (<div>{person.name}</div>)
-      })}
-    </div>
+    <Layout>
+      <h1>People</h1>
+    </Layout>
   );
 }
 
-export default App;
+export default People

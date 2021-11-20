@@ -8,17 +8,17 @@ const apiBaseUrl = config('apiBaseUrl')
 
 
 export async function apiFetch<T>(
-  url: string,
+  path: string,
   opts?: RequestOptions,
 ): Promise<T> {
-  if (opts && !opts.isFullUrl && !apiBaseUrl) {
+  if (apiBaseUrl === null) {
     throw new Error('API URL not set')
   }
 
   opts = opts || {}
   opts.headers = { 'content-type': 'application/json', ...opts.headers }
 
-  const apiUrl = opts.isFullUrl ? url : `${apiBaseUrl}${url}`
+  const apiUrl = `${apiBaseUrl}${path}`
   
   const res = await fetch(apiUrl, opts)
   return await res.json()
