@@ -32,15 +32,12 @@ ReactDOM.render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="people" element={<People />}>
-              <Route path=":id" element={<Person />} />
-            </Route>
-            <Route path="movies" element={<Movies />}>
-              <Route path=":id" element={<Movie />} />
-            </Route>
-            <Route path="planets" element={<Planets />}>
-              <Route path=":id" element={<Planet />} />
-            </Route>
+            <Route path="people" element={<People />} />
+            <Route path="people/:personId" element={<Person />} />
+            <Route path="movies" element={<Movies />} />
+            <Route path="movies/:movieId" element={<Movie />} />
+            <Route path="planets" element={<Planets />} />
+            <Route path="planets/:planetId" element={<Planet />} />
           </Routes>
         </BrowserRouter>
       </Provider>

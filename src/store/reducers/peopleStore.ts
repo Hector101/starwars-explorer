@@ -5,11 +5,12 @@ import { apiFetch } from 'src/utils/apiFetch'
 import { ApiResponse, Person } from 'src/types'
 
 export type PeopleState = & {
-  data: ApiResponse<Person[]>
+  people: ApiResponse<Person[]>
+  person: Person | null
   status: 'loading' | 'failed' | 'loaded'
 }
 
-const initialData = {
+const peopleInitialState = {
   count: 0,
   next: null,
   previous: null,
@@ -17,24 +18,35 @@ const initialData = {
 }
 
 const initialState: PeopleState = {
-  data: initialData,
+  people: peopleInitialState,
+  person: null,
   status: 'loading',
 }
 
 export const loadPeople = createAsyncThunk(
   'people/loadPeople',
-  async () => {
-    const response = await apiFetch<ApiResponse<Person[]>>('/api/people')
+  async (url: string) => {
+    const response = await apiFetch<ApiResponse<Person[]>>(url)
     return response
   }
 )
 
-export const loadMorePeople = createAsyncThunk(
-  'people/loadMorePeople',
-  async (url: string) => {
-    const path = new URL(url).pathname
-    const response = await apiFetch<ApiResponse<Person[]>>(path)
-    return response
+// export const loadMorePeople = createAsyncThunk(
+//   'people/loadMorePeople',
+//   async (url: string) => {
+//     const path = new URL(url).pathname
+//     const response = await apiFetch<ApiResponse<Person[]>>(path)
+//     return response
+//   }
+// )
+
+export const loadPerson = createAsyncThunk(
+  "people/loadPerson",
+  async (personId: string) => {
+    const response = await apiFetch<Person>(`/api/people/${personId}`)
+    const { name, height, mass, hair_color, skin_color, gender, birth_year } =
+      response
+    return { name, height, mass, hair_color, skin_color, gender, birth_year }
   }
 )
 
@@ -49,28 +61,38 @@ export const peopleSlice = createSlice({
       })
       .addCase(loadPeople.fulfilled, (state, action) => {
         state.status = 'loaded'
-        state.data = action.payload
+        state.people = action.payload
       })
       .addCase(loadPeople.rejected, (state) => {
         state.status = 'failed'
-        state.data = initialData
+        state.people = peopleInitialState
       })
-      .addCase(loadMorePeople.pending, (state) => {
+      // .addCase(loadMorePeople.pending, (state) => {
+      //   state.status = 'loading'
+      //   state.people = peopleInitialState
+      // })
+      // .addCase(loadMorePeople.fulfilled, (state, action) => {
+      //   state.status = 'loaded'
+      //   state.people = action.payload
+      // })
+      // .addCase(loadMorePeople.rejected, (state) => {
+      //   state.status = 'failed'
+      //   state.people = peopleInitialState
+      // })
+      .addCase(loadPerson.pending, (state) => {
         state.status = 'loading'
-        state.data = initialData
       })
-      .addCase(loadMorePeople.fulfilled, (state, action) => {
+      .addCase(loadPerson.fulfilled, (state, action) => {
         state.status = 'loaded'
-        state.data = action.payload
+        state.person = action.payload
       })
-      .addCase(loadMorePeople.rejected, (state) => {
+      .addCase(loadPerson.rejected, (state) => {
         state.status = 'failed'
-        state.data = initialData
+        state.person = null
       })
   },
 })
 
 export const selectPeople = (state: RootState) => state.people
-
 
 export const { reducer: peopleReducer } =  peopleSlice

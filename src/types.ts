@@ -1,3 +1,5 @@
+export type StringDict = { [k: string]: string }
+
 export type ApiResponse<P = {}> = {
   count: number
   next: string | null
