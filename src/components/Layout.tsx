@@ -10,7 +10,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'
 import { grey } from '@mui/material/colors'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
 type LayoutProps =
   | { status: 'loading' | 'failed' | 'loaded', loader: React.ReactElement }
@@ -28,6 +28,10 @@ const Layout: React.FC<LayoutProps & { goBackToPath?: string }> = ({
     if (goBackToPath) {
       navigate(goBackToPath)
     }
+  }
+
+  const handleReload = () => {
+    window.location.reload()
   }
 
   return (
@@ -59,11 +63,43 @@ const Layout: React.FC<LayoutProps & { goBackToPath?: string }> = ({
       >
         <Box sx={{ maxWidth: 600, marginX: "auto" }}>
           {status === "loading" && <>{loader}</>}
-          {status === "failed" && <Typography>Error</Typography>}
+          {status === "failed" && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: 'column',
+                textAlign: "center",
+              }}
+            >
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                An Error occurred,{" "}
+                <Typography
+                  variant="h6"
+                  sx={{
+                    textDecoration: 'underline',
+                    display: 'inline-block',
+                    cursor: 'pointer'
+                  }}
+                  onClick={handleReload}
+                >
+                  try again.
+                </Typography>
+              </Typography>
+              <Button variant="contained" component={Link} to="/" sx={{ mt: 2 }}>
+                Go Back Home
+              </Button>
+            </Box>
+          )}
           {(status === "loaded" || !status) && (
             <>
               {goBackToPath && (
-                <Button startIcon={<ArrowBackIcon />} sx={{ mb: 2 }} onClick={handleGoBack}>
+                <Button
+                  startIcon={<ArrowBackIcon />}
+                  sx={{ mb: 2 }}
+                  onClick={handleGoBack}
+                >
                   Go Back
                 </Button>
               )}

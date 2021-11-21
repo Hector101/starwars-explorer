@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   List,
   ListItem,
@@ -22,16 +22,21 @@ import { parseSearchParams } from 'src/utils/string'
 const People = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const [currentPage, setCurrentPage] = useState(0)
 
   const dispatch = useAppDispatch()
   const state = useAppSelector(selectPeople)
 
   useEffect(() => {
     if (!location.search) {
+      setCurrentPage(0)
       dispatch(loadPeople('/api/people'))
       return
     }
 
+    const param = parseSearchParams(location.search)
+    const pageNumber = Number(param.page)
+    setCurrentPage((pageNumber - 1) * 10)
     dispatch(loadPeople(`/api/people/${location.search}`))
   }, [location])
 
@@ -55,14 +60,12 @@ const People = () => {
     }
   }
 
-  console.log(state.people, '<<<<<<<<<<<<<<,')
-
   return (
     <Layout status={state.status} loader={<PeopleSkeleton />} goBackToPath="/">
       {state.people.results.map((person, index) => (
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           <ListItem>
-            <ListItemButton component={Link} to={`/people/${index + 1}`}>
+            <ListItemButton component={Link} to={`/people/${currentPage + index + 1}`}>
               <ListItemAvatar>
                 <Avatar />
               </ListItemAvatar>

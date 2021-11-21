@@ -31,15 +31,6 @@ export const loadPeople = createAsyncThunk(
   }
 )
 
-// export const loadMorePeople = createAsyncThunk(
-//   'people/loadMorePeople',
-//   async (url: string) => {
-//     const path = new URL(url).pathname
-//     const response = await apiFetch<ApiResponse<Person[]>>(path)
-//     return response
-//   }
-// )
-
 export const loadPerson = createAsyncThunk(
   "people/loadPerson",
   async (personId: string) => {
@@ -63,22 +54,11 @@ export const peopleSlice = createSlice({
         state.status = 'loaded'
         state.people = action.payload
       })
-      .addCase(loadPeople.rejected, (state) => {
+      .addCase(loadPeople.rejected, (state, action) => {
+        console.log(action, '<<<<<<<lLLLL<<<<<<<<<<')
         state.status = 'failed'
         state.people = peopleInitialState
       })
-      // .addCase(loadMorePeople.pending, (state) => {
-      //   state.status = 'loading'
-      //   state.people = peopleInitialState
-      // })
-      // .addCase(loadMorePeople.fulfilled, (state, action) => {
-      //   state.status = 'loaded'
-      //   state.people = action.payload
-      // })
-      // .addCase(loadMorePeople.rejected, (state) => {
-      //   state.status = 'failed'
-      //   state.people = peopleInitialState
-      // })
       .addCase(loadPerson.pending, (state) => {
         state.status = 'loading'
       })
