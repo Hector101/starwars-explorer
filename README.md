@@ -5,9 +5,10 @@ A React application that displays data for the Star wars API.
 https://starwars-explorer.netlify.app
 
 ## Tools
-- React.js
-- TypeScript
-- Redux (Redux Toolkit)
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Redux (Redux Toolkit)](https://redux-toolkit.js.org/)
+- [Material UI](https://mui.com)
 
 ## Prerequisites
 The following should be installed in your machine
