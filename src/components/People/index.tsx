@@ -6,26 +6,23 @@ import {
   ListItemButton,
   ListItemAvatar,
   Avatar,
-  Button,
-  Box,
 } from "@mui/material"
-import { Link, useNavigate, useLocation } from "react-router-dom"
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import { Link, useLocation } from 'react-router-dom'
 
-import { loadPeople, selectPeople } from 'src/store/reducers/peopleStore'
+import { selectPeopleState } from 'src/store/reducers/peopleReducer'
+import { loadPeople } from 'src/store/actions/peopleAction'
 import { useAppDispatch, useAppSelector } from 'src/store/hook'
-import Layout from 'src/components/Layout'
-import PeopleSkeleton from './PeopleSkeleton'
+import Layout from 'src/components/Shared/Layout'
+import PageListingSkeleton from 'src/components/Shared/PageListingSkeleton'
 import { parseSearchParams } from 'src/utils/string'
+import Pagination from 'src/components/Shared/Pagination'
 
 const People = () => {
-  const navigate = useNavigate()
   const location = useLocation()
   const [currentPage, setCurrentPage] = useState(0)
 
   const dispatch = useAppDispatch()
-  const state = useAppSelector(selectPeople)
+  const state = useAppSelector(selectPeopleState)
 
   useEffect(() => {
     if (!location.search) {
@@ -38,34 +35,22 @@ const People = () => {
     const pageNumber = Number(param.page)
     setCurrentPage((pageNumber - 1) * 10)
     dispatch(loadPeople(`/api/people/${location.search}`))
-  }, [location])
-
-  const handleGoToNext = () => {
-    if (state.people.next) {
-      const queryParam = new URL(state.people.next).search
-      navigate(`/people/${queryParam}`)
-    }
-  }
-
-  const handleGoToPrevious = () => {
-    if (state.people.previous) {
-      const queryParam = new URL(state.people.previous).search
-      const param = parseSearchParams(queryParam)
-
-      if (param.page === '1') {
-        navigate('/people')
-        return
-      }
-      navigate(`/people/${queryParam}`)
-    }
-  }
+  }, [location, dispatch])
 
   return (
-    <Layout status={state.status} loader={<PeopleSkeleton />} goBackToPath="/">
+    <Layout
+      status={state.status}
+      loader={<PageListingSkeleton />}
+      goBackToPath="/"
+      navTitle="People"
+    >
       {state.people.results.map((person, index) => (
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           <ListItem>
-            <ListItemButton component={Link} to={`/people/${currentPage + index + 1}`}>
+            <ListItemButton
+              component={Link}
+              to={`/people/${currentPage + index + 1}`}
+            >
               <ListItemAvatar>
                 <Avatar />
               </ListItemAvatar>
@@ -74,28 +59,13 @@ const People = () => {
           </ListItem>
         </List>
       ))}
-      <Box sx={{ position: "relative", py: 2 }}>
-        {state.people.previous && (
-          <Button
-            startIcon={<ArrowBackIcon />}
-            sx={{ position: "absolute", left: 0 }}
-            onClick={handleGoToPrevious}
-          >
-            Previous
-          </Button>
-        )}
-        {state.people.next && (
-          <Button
-            endIcon={<ArrowForwardIcon />}
-            sx={{ position: "absolute", right: 0 }}
-            onClick={handleGoToNext}
-          >
-            Next
-          </Button>
-        )}
-      </Box>
+      <Pagination
+        next={state.people.next}
+        previous={state.people.previous}
+        pathName="people"
+      />
     </Layout>
-  );
+  )
 }
 
 export default People

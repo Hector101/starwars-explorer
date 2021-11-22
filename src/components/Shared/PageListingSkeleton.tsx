@@ -5,10 +5,9 @@ import {
   Skeleton,
   ListItemAvatar,
   ListItemButton,
-  Avatar
 } from "@mui/material"
 
-const PeopleSkeleton = () => {
+const PageListingSkeleton = () => {
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
       {Array(10).fill(0).map(() => (
@@ -30,4 +29,4 @@ const PeopleSkeleton = () => {
   )
 }
 
-export default PeopleSkeleton
+export default PageListingSkeleton

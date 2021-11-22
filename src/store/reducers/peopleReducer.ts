@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState, AppThunk } from '..'
+import { createSlice } from '@reduxjs/toolkit'
+import { RootState } from '..'
 
-import { apiFetch } from 'src/utils/apiFetch'
 import { ApiResponse, Person } from 'src/types'
+import { loadPeople, loadPerson } from 'src/store/actions/peopleAction'
 
 export type PeopleState = & {
   people: ApiResponse<Person[]>
@@ -23,24 +23,6 @@ const initialState: PeopleState = {
   status: 'loading',
 }
 
-export const loadPeople = createAsyncThunk(
-  'people/loadPeople',
-  async (url: string) => {
-    const response = await apiFetch<ApiResponse<Person[]>>(url)
-    return response
-  }
-)
-
-export const loadPerson = createAsyncThunk(
-  "people/loadPerson",
-  async (personId: string) => {
-    const response = await apiFetch<Person>(`/api/people/${personId}`)
-    const { name, height, mass, hair_color, skin_color, gender, birth_year } =
-      response
-    return { name, height, mass, hair_color, skin_color, gender, birth_year }
-  }
-)
-
 export const peopleSlice = createSlice({
   name: 'people',
   initialState,
@@ -54,8 +36,7 @@ export const peopleSlice = createSlice({
         state.status = 'loaded'
         state.people = action.payload
       })
-      .addCase(loadPeople.rejected, (state, action) => {
-        console.log(action, '<<<<<<<lLLLL<<<<<<<<<<')
+      .addCase(loadPeople.rejected, (state) => {
         state.status = 'failed'
         state.people = peopleInitialState
       })
@@ -73,6 +54,6 @@ export const peopleSlice = createSlice({
   },
 })
 
-export const selectPeople = (state: RootState) => state.people
+export const selectPeopleState = (state: RootState) => state.people
 
 export const { reducer: peopleReducer } =  peopleSlice

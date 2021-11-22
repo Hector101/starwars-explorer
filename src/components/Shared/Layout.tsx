@@ -10,17 +10,25 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'
 import { grey } from '@mui/material/colors'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { useNavigate, Link } from "react-router-dom"
+import { useNavigate, Link } from 'react-router-dom'
 
-type LayoutProps =
+type LayoutStatusProps =
   | { status: 'loading' | 'failed' | 'loaded', loader: React.ReactElement }
   | { status?: never, loader?: never }
 
-const Layout: React.FC<LayoutProps & { goBackToPath?: string }> = ({
+type OtherLayoutProps = {
+  navTitle?: string
+  goBackToPath?: string
+}
+
+type LayoutProps = LayoutStatusProps & OtherLayoutProps
+
+const Layout: React.FC<LayoutProps> = ({
   children,
   status,
   loader,
-  goBackToPath
+  goBackToPath,
+  navTitle = 'Star Wars Explorer'
 }) => {
   const navigate = useNavigate()
 
@@ -49,7 +57,7 @@ const Layout: React.FC<LayoutProps & { goBackToPath?: string }> = ({
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Star Wars Explorer
+              {navTitle}
             </Typography>
           </Toolbar>
         </AppBar>

@@ -7,7 +7,7 @@ import {
   Grid
 } from "@mui/material"
 
-import Layout from "src/components/Layout"
+import Layout from "src/components/Shared/Layout"
 
 const categories = [
   {
