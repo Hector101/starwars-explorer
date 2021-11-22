@@ -5,9 +5,9 @@ import {
   ListItemText,
   ListItemButton,
   ListItemAvatar,
-  Avatar,
 } from "@mui/material"
 import { Link, useLocation } from 'react-router-dom'
+import Brightness4Icon from '@mui/icons-material/Brightness4'
 
 import { selectPlanetsState } from 'src/store/reducers/planetsReducer'
 import { loadPlanets } from 'src/store/actions/planetsAction'
@@ -41,7 +41,6 @@ const Planets = () => {
     <Layout
       status={state.status}
       loader={<PageListingSkeleton />}
-      goBackToPath="/"
       navTitle="Planets"
     >
       {state.planets.results.map((planet, index) => (
@@ -52,9 +51,9 @@ const Planets = () => {
               to={`/planets/${currentPage + index + 1}`}
             >
               <ListItemAvatar>
-                <Avatar />
+                <Brightness4Icon />
               </ListItemAvatar>
-              <ListItemText primary={planet.title} />
+              <ListItemText primary={planet.name} />
             </ListItemButton>
           </ListItem>
         </List>

@@ -11,9 +11,9 @@ import { grey } from '@mui/material/colors'
 
 import Layout from 'src/components/Shared/Layout'
 import { selectMoviesState } from 'src/store/reducers/moviesReducer'
-import { loadPerson } from 'src/store/actions/peopleAction'
+import { loadMovie } from 'src/store/actions/moviesAction'
 import { useAppDispatch, useAppSelector } from 'src/store/hook'
-import PageListingSkeleton from 'src/components/Shared/PageListingSkeleton'
+import PageDetailSkeleton from 'src/components/Shared/PageDetailSkeleton'
 import { wordify } from 'src/utils/string'
 
 const Movie = () => {
@@ -26,15 +26,15 @@ const Movie = () => {
       return
     }
 
-    dispatch(loadPerson(movieId))
+    dispatch(loadMovie(movieId))
   }, [movieId, dispatch])
 
   return (
     <Layout
       status={state.status}
-      loader={<PageListingSkeleton />}
-      goBackToPath="/movies"
+      loader={<PageDetailSkeleton />}
       navTitle="Movie"
+      isDetailPage={true}
     >
       <Paper elevation={0} sx={{ padding: 4 }}>
         {state.movie && (
@@ -48,11 +48,7 @@ const Movie = () => {
                     <Typography sx={{ textTransform: "capitalize" }}>
                       {wordify(key)}
                     </Typography>
-                    {Array.isArray(value) ? (
-                      <Typography variant="h6">{value.join(", ")}</Typography>
-                    ) : (
-                      <Typography variant="h6">{value}</Typography>
-                    )}
+                    <Typography variant="h6">{value}</Typography>
                     <Divider />
                   </Box>
                 );

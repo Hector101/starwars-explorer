@@ -18,7 +18,7 @@ export type Person = {
 }
 
 export type Planet = {
-  title: string
+  name: string
   terrain: string
   population: string
 }
@@ -26,5 +26,5 @@ export type Planet = {
 export type Movie = {
   title: string
   director: string
-  producers: string[]
+  producer: string
 }

@@ -18,7 +18,8 @@ type LayoutStatusProps =
 
 type OtherLayoutProps = {
   navTitle?: string
-  goBackToPath?: string
+  isDetailPage?: boolean
+  hasGobackButton?: boolean
 }
 
 type LayoutProps = LayoutStatusProps & OtherLayoutProps
@@ -27,15 +28,18 @@ const Layout: React.FC<LayoutProps> = ({
   children,
   status,
   loader,
-  goBackToPath,
-  navTitle = 'Star Wars Explorer'
+  navTitle = 'Star Wars Explorer',
+  isDetailPage = false,
+  hasGobackButton = true,
 }) => {
   const navigate = useNavigate()
 
   const handleGoBack = () => {
-    if (goBackToPath) {
-      navigate(goBackToPath)
+    if (isDetailPage) {
+      navigate(-1)
+      return
     }
+    navigate('/')
   }
 
   const handleReload = () => {
@@ -102,13 +106,13 @@ const Layout: React.FC<LayoutProps> = ({
           )}
           {(status === "loaded" || !status) && (
             <>
-              {goBackToPath && (
+              {hasGobackButton && (
                 <Button
                   startIcon={<ArrowBackIcon />}
                   sx={{ mb: 2 }}
                   onClick={handleGoBack}
                 >
-                  Go Back
+                  {isDetailPage ? 'Go Back' : 'Go Back Home'}
                 </Button>
               )}
               {children}

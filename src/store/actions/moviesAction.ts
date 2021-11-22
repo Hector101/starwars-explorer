@@ -15,7 +15,7 @@ export const loadMovie = createAsyncThunk(
   "movies/loadMovie",
   async (movieId: string) => {
     const response = await apiFetch<Movie>(`/api/films/${movieId}`)
-    const { title, director, producers } = response
-    return { title, director, producers }
+    const { title, director, producer } = response
+    return { title, director, producer }
   }
 )

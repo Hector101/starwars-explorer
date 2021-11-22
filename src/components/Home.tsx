@@ -29,7 +29,7 @@ const categories = [
 
 const Home = () => {
   return (
-    <Layout>
+    <Layout hasGobackButton={false}>
       <ImageList component={Grid} cols={3} gap={8}>
         {categories.map((category) => (
           <ImageListItem key={category.img} component={Link} to={category.to}>

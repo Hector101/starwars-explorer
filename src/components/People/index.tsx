@@ -41,7 +41,6 @@ const People = () => {
     <Layout
       status={state.status}
       loader={<PageListingSkeleton />}
-      goBackToPath="/"
       navTitle="People"
     >
       {state.people.results.map((person, index) => (

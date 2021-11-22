@@ -15,7 +15,7 @@ export const loadPlanet = createAsyncThunk(
   "planets/loadPlanet",
   async (planetId: string) => {
     const response = await apiFetch<Planet>(`/api/planets/${planetId}`)
-    const { title, terrain, population } = response
-    return { title, terrain, population }
+    const { name, terrain, population } = response
+    return { name, terrain, population }
   }
 )

@@ -13,7 +13,7 @@ import Layout from 'src/components/Shared/Layout'
 import { selectPeopleState } from 'src/store/reducers/peopleReducer'
 import { loadPerson } from 'src/store/actions/peopleAction'
 import { useAppDispatch, useAppSelector } from 'src/store/hook'
-import PageListingSkeleton from 'src/components/Shared/PageListingSkeleton'
+import PageDetailSkeleton from 'src/components/Shared/PageDetailSkeleton'
 import { wordify } from 'src/utils/string'
 
 const Person = () => {
@@ -32,9 +32,9 @@ const Person = () => {
   return (
     <Layout
       status={state.status}
-      loader={<PageListingSkeleton />}
-      goBackToPath="/people"
+      loader={<PageDetailSkeleton />}
       navTitle="Person"
+      isDetailPage={true}
     >
       <Paper elevation={0} sx={{ padding: 4 }}>
         {state.person && (

@@ -5,9 +5,9 @@ import {
   ListItemText,
   ListItemButton,
   ListItemAvatar,
-  Avatar,
 } from "@mui/material"
 import { Link, useLocation } from 'react-router-dom'
+import MovieIcon from '@mui/icons-material/Movie'
 
 import { selectMoviesState } from 'src/store/reducers/moviesReducer'
 import { loadMovies } from 'src/store/actions/moviesAction'
@@ -41,7 +41,6 @@ const Movies = () => {
     <Layout
       status={state.status}
       loader={<PageListingSkeleton />}
-      goBackToPath="/"
       navTitle="Movies"
     >
       {state.movies.results.map((movie, index) => (
@@ -52,7 +51,7 @@ const Movies = () => {
               to={`/movies/${currentPage + index + 1}`}
             >
               <ListItemAvatar>
-                <Avatar />
+                <MovieIcon />
               </ListItemAvatar>
               <ListItemText primary={movie.title} />
             </ListItemButton>

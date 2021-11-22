@@ -13,7 +13,7 @@ import Layout from 'src/components/Shared/Layout'
 import { selectPlanetsState } from 'src/store/reducers/planetsReducer'
 import { loadPlanet } from 'src/store/actions/planetsAction'
 import { useAppDispatch, useAppSelector } from 'src/store/hook'
-import PageListingSkeleton from 'src/components/Shared/PageListingSkeleton'
+import PageDetailSkeleton from 'src/components/Shared/PageDetailSkeleton'
 import { wordify } from 'src/utils/string'
 
 const Planet = () => {
@@ -32,17 +32,17 @@ const Planet = () => {
   return (
     <Layout
       status={state.status}
-      loader={<PageListingSkeleton />}
-      goBackToPath="/planets"
+      loader={<PageDetailSkeleton />}
       navTitle="Planet"
+      isDetailPage={true}
     >
       <Paper elevation={0} sx={{ padding: 4 }}>
         {state.planet && (
           <>
-            <Typography variant="h4">{state.planet.title}</Typography>
+            <Typography variant="h4">{state.planet.name}</Typography>
             <Stack spacing={2} mt={2}>
               {Object.entries(state.planet).map(([key, value]) => {
-                if (key === "title") return null;
+                if (key === "name") return null;
                 return (
                   <Box color={grey[700]}>
                     <Typography sx={{ textTransform: "capitalize" }}>
